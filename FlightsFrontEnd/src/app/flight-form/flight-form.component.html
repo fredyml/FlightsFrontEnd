@@ -1,0 +1,45 @@
+<div class="container">
+  <h1 class="title">Buscador de Vuelos</h1>
+  <div class="search-container">
+    <form (ngSubmit)="onSubmit()" class="form-container">
+      <div class="input-container">
+        <label for="origin">Ciudad de Origen:</label>
+        <input type="text" id="origin" [(ngModel)]="origin" name="origin" required maxlength="3" pattern="[a-zA-Z]+" (keydown)="validateInput($event, 'origin')" (input)="convertToUppercase('origin')">
+        <div *ngIf="!isValidInput(origin)">Ingrese solo letras sin caracteres especiales ni números.</div>
+      </div>
+      <div class="input-container">
+        <label for="destination">Ciudad de Destino:</label>
+        <input type="text" id="destination" [(ngModel)]="destination" name="destination" required maxlength="3" pattern="[a-zA-Z]+" (keydown)="validateInput($event, 'destination')" (input)="convertToUppercase('destination')">
+        <div *ngIf="!isValidInput(destination)">Ingrese solo letras sin caracteres especiales ni números.</div>
+      </div>
+      <button type="submit">Buscar Vuelo</button>
+    </form>
+    <div class="airplane-container">
+      <img src="assets/airplane.png" alt="Avión" class="airplane-img">
+    </div>
+  </div>
+  <div class="content-container">
+    <div class="flight-details">
+      <h2 *ngIf="flight.Journey.Origin && flight.Journey.Destination">Vuelo de {{ flight.Journey.Origin }} a {{ flight.Journey.Destination }}</h2>
+      <p *ngIf="flight.Journey.Price">Precio: {{ flight.Journey.Price }}</p>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Origen</th>
+            <th scope="col">Destino</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Transporte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let flightDetail of flight.Journey.Flights">
+            <td>{{ flightDetail.Origin }}</td>
+            <td>{{ flightDetail.Destination }}</td>
+            <td>{{ flightDetail.Price }}</td>
+            <td>{{ flightDetail.Transport.FlightCarrier }} - {{ flightDetail.Transport.FlightNumber }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
