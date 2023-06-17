@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {Flight} from './flight-form/contracts/Flight';
+import { Flight } from './flight-form/contracts/Flight';
+import { environment } from '../environments/environment';
 
 export interface ExchangeRates {
   rates: {
@@ -13,10 +14,7 @@ export interface ExchangeRates {
   providedIn: 'root',
 })
 export class FlightService {
-  private apiUrl = 'https://localhost:7199/api/Flights/CalculateRoute';
-  private exchangeApiUrl = 'https://api.exchangerate-api.com/v4/latest/';
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getFlight(origin: string, destination: string): Observable<Flight> {
     const body = JSON.stringify({
@@ -28,11 +26,11 @@ export class FlightService {
       'Content-Type': 'application/json',
     });
 
-    return this.http.post<Flight>(this.apiUrl, body, { headers: headers });
+    return this.http.post<Flight>(environment.apiUrl, body, { headers: headers });
   }
 
   getExchangeRates(baseCurrency: string): Observable<ExchangeRates> {
-    const url = `${this.exchangeApiUrl}${baseCurrency}`;
+    const url = `${environment.exchangeApiUrl}${baseCurrency}`;
 
     return this.http.get<ExchangeRates>(url);
   }

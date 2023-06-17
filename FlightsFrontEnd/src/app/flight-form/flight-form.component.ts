@@ -76,7 +76,7 @@ export class FlightFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.selectedCurrency = 'USD'; // Establecer USD como la moneda seleccionada por defecto
+    this.selectedCurrency = 'USD';
     this.loadExchangeRates();
 
     this.flightService
