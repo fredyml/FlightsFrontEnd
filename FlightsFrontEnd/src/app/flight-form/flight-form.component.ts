@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FlightService } from '../flight.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-flight-form',
@@ -10,13 +12,16 @@ export class FlightFormComponent {
   origin = '';
   destination = '';
   flight: any = {
-    Journey: {
+      Origin: '',
+      Destination: '',
+      Price: 0,
       Flights: []
-    }
   };
+  
   warningMessage = '';
 
-  constructor(private flightService: FlightService) { }
+  constructor(private flightService: FlightService) {
+   }
 
   onSubmit(): void {
     const originUpperCase = this.origin.toUpperCase();
@@ -30,9 +35,24 @@ export class FlightFormComponent {
       return;
     }
 
-    this.flightService.getFlight(originUpperCase, destinationUpperCase).subscribe(flight => {
-      this.flight = flight;
-      this.warningMessage = '';
+    this.flightService.getFlight(originUpperCase, destinationUpperCase).pipe(
+      catchError((error) => {
+        console.error(error);
+        this.flight = {
+          Origin: '',
+          Destination: '',
+          Price: 0,
+          Flights: []
+        };
+        const errorMessage = error.error ? error.error : 'Hubo un error al buscar vuelos. Intente de nuevo.';
+        window.alert(errorMessage.replace('An operation error occurred: ', ''));
+        return of(null);
+      })
+    ).subscribe(flight => {
+      if(flight){
+        this.flight = flight;
+        this.warningMessage = '';
+      }
     });
   }
 
@@ -59,6 +79,7 @@ export class FlightFormComponent {
 
     if (this.origin.toUpperCase() === this.destination.toUpperCase()) {
       this.warningMessage = 'El origen y el destino no pueden ser iguales';
+      return false;
     }
 
     const validCharacters = /^[A-Za-z]+$/;

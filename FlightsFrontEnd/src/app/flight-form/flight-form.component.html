@@ -21,9 +21,9 @@
   </div>
   <div class="content-container">
     <div class="flight-details">
-      <h2 *ngIf="flight.Journey.Origin && flight.Journey.Destination">Vuelo de {{ flight.Journey.Origin }} a {{ flight.Journey.Destination }}</h2>
-      <p *ngIf="flight.Journey.Price">Precio: {{ flight.Journey.Price }}</p>
-      <table class="table table-striped">
+      <h2 *ngIf="flight?.Origin && flight?.Destination">Vuelo de {{ flight.Origin }} a {{ flight.Destination }}</h2>
+      <p *ngIf="flight?.Price">Precio: {{ flight.Price }}</p>
+      <table class="table table-striped" *ngIf="flight?.Flights">
         <thead>
           <tr>
             <th scope="col">Origen</th>
@@ -33,7 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let flightDetail of flight.Journey.Flights">
+          <tr *ngFor="let flightDetail of flight.Flights">
             <td>{{ flightDetail.Origin }}</td>
             <td>{{ flightDetail.Destination }}</td>
             <td>{{ flightDetail.Price }}</td>
