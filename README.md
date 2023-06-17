@@ -42,6 +42,9 @@ To run the FlightsFrontEnd application, follow these steps:
 
 Please refer to the individual project documentation for more detailed instructions.
 
+![buscador](https://github.com/fredyml/FlightsFrontEnd/assets/113043655/fd55272e-e1e4-46d8-92a9-7869fc6aeaaf)
+
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
