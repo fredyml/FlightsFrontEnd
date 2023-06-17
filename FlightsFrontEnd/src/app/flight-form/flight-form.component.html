@@ -12,7 +12,7 @@
         <input type="text" id="destination" [(ngModel)]="destination" name="destination" required maxlength="3" pattern="[a-zA-Z]+" (keydown)="validateInput($event, 'destination')" (input)="convertToUppercase('destination')">
         <div *ngIf="!isValidInput(destination)">Ingrese solo letras sin caracteres especiales ni números.</div>
       </div>
-      <button type="submit">Buscar Vuelo</button>
+      <button type="submit" class="submit-button">Buscar Vuelo</button>
     </form>
     <div class="airplane-container">
       <img src="assets/airplane.png" alt="Avión" class="airplane-img">

@@ -33,8 +33,10 @@ export class FlightFormComponent {
     const input = event.key;
     const validCharacters = /^[A-Za-z]$/;
     const isBackspace = event.key === 'Backspace';
+    const isTab = event.key === 'Tab';
+    const isEnter = event.key === 'Enter';
 
-    if (!validCharacters.test(input) && !isBackspace) {
+    if (!validCharacters.test(input) && !isBackspace && !isTab && !isEnter) {
       event.preventDefault();
     }
   }
