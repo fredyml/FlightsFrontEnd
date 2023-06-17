@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import {Flight} from './flight-form/contracts/Flight';
 
 export interface ExchangeRates {
   rates: {
@@ -17,7 +18,7 @@ export class FlightService {
 
   constructor(private http: HttpClient) {}
 
-  getFlight(origin: string, destination: string) {
+  getFlight(origin: string, destination: string): Observable<Flight> {
     const body = JSON.stringify({
       origin: origin,
       destination: destination,
@@ -27,7 +28,7 @@ export class FlightService {
       'Content-Type': 'application/json',
     });
 
-    return this.http.post(this.apiUrl, body, { headers: headers });
+    return this.http.post<Flight>(this.apiUrl, body, { headers: headers });
   }
 
   getExchangeRates(baseCurrency: string): Observable<ExchangeRates> {

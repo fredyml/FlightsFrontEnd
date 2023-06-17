@@ -3,14 +3,6 @@
   <div class="search-container">
     <form (ngSubmit)="onSubmit()" class="form-container">
       <div class="input-container">
-        <div class="input-container">
-          <label for="currency">Moneda:</label>
-          <select id="currency" [(ngModel)]="selectedCurrency" name="currency" (ngModelChange)="updatePrices()">
-            <option *ngFor="let currency of getObjectKeys(currencyRates)" [value]="currency">{{ currency }}</option>
-          </select>
-        </div>
-      </div>
-      <div class="input-container">
         <label for="origin">Ciudad de Origen:</label>
         <input
           type="text"
@@ -23,9 +15,7 @@
           (keydown)="validateInput($event, 'origin')"
           (input)="convertToUppercase('origin')"
         />
-        <div *ngIf="!isValidInput(origin) && !warningMessage">
-          Ingrese solo letras sin caracteres especiales ni números.
-        </div>
+        <div *ngIf="!isValidInput(origin) && !warningMessage"></div>
       </div>
       <div class="input-container">
         <label for="destination">Ciudad de Destino:</label>
@@ -40,12 +30,15 @@
           (keydown)="validateInput($event, 'destination')"
           (input)="convertToUppercase('destination')"
         />
-        <div *ngIf="!isValidInput(destination) && !warningMessage">
-          Ingrese solo letras sin caracteres especiales ni números.
-        </div>
+        <div *ngIf="!isValidInput(destination) && !warningMessage"></div>
       </div>
-      <div class="warning" *ngIf="warningMessage">{{ warningMessage }}</div>
       <button type="submit">Buscar Vuelo</button>
+      <div class="input-container currency-container">
+        <label for="currency" class="currency-label">Cambiar moneda:</label>
+        <select [(ngModel)]="selectedCurrency" name="currency" (change)="updatePrices()">
+          <option *ngFor="let currency of getObjectKeys(currencyRates)" [value]="currency">{{ currency }}</option>
+        </select>
+      </div>
     </form>
     <div class="airplane-container">
       <img src="assets/airplane.png" alt="Avión" class="airplane-img" />
