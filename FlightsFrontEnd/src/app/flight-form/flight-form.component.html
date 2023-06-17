@@ -5,14 +5,15 @@
       <div class="input-container">
         <label for="origin">Ciudad de Origen:</label>
         <input type="text" id="origin" [(ngModel)]="origin" name="origin" required maxlength="3" pattern="[a-zA-Z]+" (keydown)="validateInput($event, 'origin')" (input)="convertToUppercase('origin')">
-        <div *ngIf="!isValidInput(origin)">Ingrese solo letras sin caracteres especiales ni números.</div>
+        <div *ngIf="!isValidInput(origin) && !warningMessage">Ingrese solo letras sin caracteres especiales ni números.</div>
       </div>
       <div class="input-container">
         <label for="destination">Ciudad de Destino:</label>
         <input type="text" id="destination" [(ngModel)]="destination" name="destination" required maxlength="3" pattern="[a-zA-Z]+" (keydown)="validateInput($event, 'destination')" (input)="convertToUppercase('destination')">
-        <div *ngIf="!isValidInput(destination)">Ingrese solo letras sin caracteres especiales ni números.</div>
+        <div *ngIf="!isValidInput(destination) && !warningMessage">Ingrese solo letras sin caracteres especiales ni números.</div>
       </div>
-      <button type="submit" class="submit-button">Buscar Vuelo</button>
+      <div class="warning" *ngIf="warningMessage">{{ warningMessage }}</div>
+      <button type="submit">Buscar Vuelo</button>
     </form>
     <div class="airplane-container">
       <img src="assets/airplane.png" alt="Avión" class="airplane-img">

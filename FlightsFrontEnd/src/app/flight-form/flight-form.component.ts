@@ -14,6 +14,7 @@ export class FlightFormComponent {
       Flights: []
     }
   };
+  warningMessage = '';
 
   constructor(private flightService: FlightService) { }
 
@@ -21,12 +22,18 @@ export class FlightFormComponent {
     const originUpperCase = this.origin.toUpperCase();
     const destinationUpperCase = this.destination.toUpperCase();
 
-    if (originUpperCase === destinationUpperCase || !this.isValidInput(originUpperCase) || !this.isValidInput(destinationUpperCase)) {
+    if (
+      !this.isValidInput(originUpperCase) ||
+      !this.isValidInput(destinationUpperCase)
+    ) {
+      this.warningMessage = 'Entrada no válida';
       return;
     }
 
-    this.flightService.getFlight(originUpperCase, destinationUpperCase)
-      .subscribe(flight => this.flight = flight);
+    this.flightService.getFlight(originUpperCase, destinationUpperCase).subscribe(flight => {
+      this.flight = flight;
+      this.warningMessage = '';
+    });
   }
 
   validateInput(event: KeyboardEvent, field: keyof FlightFormComponent): void {
@@ -42,12 +49,18 @@ export class FlightFormComponent {
   }
 
   convertToUppercase(field: keyof FlightFormComponent): void {
-    const value = this[field as keyof FlightFormComponent] as string;
+    const value = this[field] as string;
     const lettersOnly = value.replace(/[^A-Za-z]/g, '');
-    this[field as keyof FlightFormComponent] = lettersOnly.toUpperCase();
+    this[field] = lettersOnly.toUpperCase();
   }
 
   isValidInput(value: string): boolean {
+    this.warningMessage = '';
+
+    if (this.origin.toUpperCase() === this.destination.toUpperCase()) {
+      this.warningMessage = 'El origen y el destino no pueden ser iguales';
+    }
+
     const validCharacters = /^[A-Za-z]+$/;
     return validCharacters.test(value);
   }
