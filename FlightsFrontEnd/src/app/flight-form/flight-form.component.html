@@ -3,32 +3,68 @@
   <div class="search-container">
     <form (ngSubmit)="onSubmit()" class="form-container">
       <div class="input-container">
+        <div class="input-container">
+          <label for="currency">Moneda:</label>
+          <select id="currency" [(ngModel)]="selectedCurrency" name="currency" (ngModelChange)="updatePrices()">
+            <option *ngFor="let currency of getObjectKeys(currencyRates)" [value]="currency">{{ currency }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-container">
         <label for="origin">Ciudad de Origen:</label>
-        <input type="text" id="origin" [(ngModel)]="origin" name="origin" required maxlength="3" pattern="[a-zA-Z]+" (keydown)="validateInput($event, 'origin')" (input)="convertToUppercase('origin')">
-        <div *ngIf="!isValidInput(origin) && !warningMessage">Ingrese solo letras sin caracteres especiales ni números.</div>
+        <input
+          type="text"
+          id="origin"
+          [(ngModel)]="origin"
+          name="origin"
+          required
+          maxlength="3"
+          pattern="[a-zA-Z]+"
+          (keydown)="validateInput($event, 'origin')"
+          (input)="convertToUppercase('origin')"
+        />
+        <div *ngIf="!isValidInput(origin) && !warningMessage">
+          Ingrese solo letras sin caracteres especiales ni números.
+        </div>
       </div>
       <div class="input-container">
         <label for="destination">Ciudad de Destino:</label>
-        <input type="text" id="destination" [(ngModel)]="destination" name="destination" required maxlength="3" pattern="[a-zA-Z]+" (keydown)="validateInput($event, 'destination')" (input)="convertToUppercase('destination')">
-        <div *ngIf="!isValidInput(destination) && !warningMessage">Ingrese solo letras sin caracteres especiales ni números.</div>
+        <input
+          type="text"
+          id="destination"
+          [(ngModel)]="destination"
+          name="destination"
+          required
+          maxlength="3"
+          pattern="[a-zA-Z]+"
+          (keydown)="validateInput($event, 'destination')"
+          (input)="convertToUppercase('destination')"
+        />
+        <div *ngIf="!isValidInput(destination) && !warningMessage">
+          Ingrese solo letras sin caracteres especiales ni números.
+        </div>
       </div>
       <div class="warning" *ngIf="warningMessage">{{ warningMessage }}</div>
       <button type="submit">Buscar Vuelo</button>
     </form>
     <div class="airplane-container">
-      <img src="assets/airplane.png" alt="Avión" class="airplane-img">
+      <img src="assets/airplane.png" alt="Avión" class="airplane-img" />
     </div>
   </div>
   <div class="content-container">
     <div class="flight-details">
-      <h2 *ngIf="flight?.Origin && flight?.Destination">Vuelo de {{ flight.Origin }} a {{ flight.Destination }}</h2>
-      <p *ngIf="flight?.Price">Precio: {{ flight.Price }}</p>
+      <h2 *ngIf="flight?.Origin && flight?.Destination">
+        Vuelo de {{ flight.Origin }} a {{ flight.Destination }}
+      </h2>
+      <p *ngIf="flight?.Price">
+        Precio: {{ flight.Price | currency: selectedCurrency }}
+      </p>
       <table class="table table-striped" *ngIf="flight?.Flights">
         <thead>
           <tr>
             <th scope="col">Origen</th>
             <th scope="col">Destino</th>
-            <th scope="col">Precio</th>
+            <th scope="col">Precio ({{ selectedCurrency }})</th>
             <th scope="col">Transporte</th>
           </tr>
         </thead>
@@ -36,8 +72,15 @@
           <tr *ngFor="let flightDetail of flight.Flights">
             <td>{{ flightDetail.Origin }}</td>
             <td>{{ flightDetail.Destination }}</td>
-            <td>{{ flightDetail.Price }}</td>
-            <td>{{ flightDetail.Transport.FlightCarrier }} - {{ flightDetail.Transport.FlightNumber }}</td>
+            <td>
+              {{
+                flightDetail.Price * currencyRates[selectedCurrency] |
+                currency: selectedCurrency
+              }}
+            </td>
+            <td>
+              {{ flightDetail.Transport.FlightCarrier }} - {{ flightDetail.Transport.FlightNumber }}
+            </td>
           </tr>
         </tbody>
       </table>
