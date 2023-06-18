@@ -15,7 +15,6 @@
           (keydown)="validateInput($event, 'origin')"
           (input)="convertToUppercase('origin')"
         />
-        <div *ngIf="!isValidInput(origin) && !warningMessage"></div>
       </div>
       <div class="input-container">
         <label for="destination">Ciudad de Destino:</label>
@@ -30,7 +29,6 @@
           (keydown)="validateInput($event, 'destination')"
           (input)="convertToUppercase('destination')"
         />
-        <div *ngIf="!isValidInput(destination) && !warningMessage"></div>
       </div>
       <button type="submit">Buscar Vuelo</button>
       <div class="input-container currency-container">

@@ -20,7 +20,6 @@ export class FlightFormComponent implements OnInit, OnDestroy {
     Flights: [],
   };
 
-  warningMessage = '';
   currencyRates: { [key: string]: number } = {};
   selectedCurrency = 'USD';
   originalFlightPrice = 0;
@@ -72,7 +71,7 @@ export class FlightFormComponent implements OnInit, OnDestroy {
       !this.isValidInput(originUpperCase) ||
       !this.isValidInput(destinationUpperCase)
     ) {
-      this.warningMessage = 'Entrada no válida';
+      alert('Entrada no válida');
       return;
     }
 
@@ -93,7 +92,6 @@ export class FlightFormComponent implements OnInit, OnDestroy {
           const errorMessage = error.error
             ? error.error
             : 'Hubo un error al buscar vuelos. Intente de nuevo.';
-          this.warningMessage = errorMessage.replace('An operation error occurred: ', '');
           return of(null);
         }),
         takeUntil(this.unsubscribe$)
@@ -103,7 +101,6 @@ export class FlightFormComponent implements OnInit, OnDestroy {
           this.flight = flight;
           this.originalFlightPrice = flight.Price;
           this.updatePrices();
-          this.warningMessage = '';
         }
       });
   }
@@ -127,7 +124,6 @@ export class FlightFormComponent implements OnInit, OnDestroy {
   }
 
   isValidInput(value: string): boolean {
-    this.warningMessage = '';
 
     const regex = new RegExp('^[A-Za-z]{3}$');
     return regex.test(value);
